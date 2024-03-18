@@ -16,14 +16,14 @@ module.exports = {
       console.log(err);
       return res.status(500).json(err);
     }
-  },  
+  },
   async getUserById(req, res) {
     const userId = req.params;
     try {
       const user = await User.findById(userId).select('-__v');
 
       if (!user) {
-        return res.status(404).json({ message: 'No user found with that ID'});
+        return res.status(404).json({ message: 'No user found with that ID' });
       };
 
       userObj = {
@@ -36,7 +36,7 @@ module.exports = {
       console.log(err);
       return res.status(500).json(err);
     }
-  },  
+  },
   async createUser(req, res) {
     try {
       const user = await User.create(req.body);
@@ -56,7 +56,7 @@ module.exports = {
       );
 
       if (!user) {
-        return res.status(404).json({ message: 'No user found with that ID'});
+        return res.status(404).json({ message: 'No user found with that ID' });
       };
 
       res.status(200).json(user);
@@ -72,7 +72,7 @@ module.exports = {
       const user = await User.findOneAndDelete(userId);
 
       if (!user) {
-        return res.status(404).json({ message: 'No user found with that ID'});
+        return res.status(404).json({ message: 'No user found with that ID' });
       };
 
       res.status(200).json(user);
@@ -81,12 +81,44 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  
+
   async addFriend(req, res) {
+    const userId = req.params.id;
+    const friendId = req.params.friendId;
 
+    try {
+      const user = await User.findById(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: 'No user found with that ID' });
+      };
+
+      user.friends.push(friendId);
+      // await user.save();
+      res.status(200).json(user);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
   },
-  
-  async deleteFriend(req, res) {
 
+  async deleteFriend(req, res) {
+    const userId = req.params.id;
+    const friendId = req.params.friendId;
+
+    try {
+      const user = await User.findById(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: 'No user found with that ID' });
+      };
+
+      user.friends.pull(friendId);
+      // await user.save();
+      res.status(200).json(user);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
   },
 }
