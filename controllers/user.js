@@ -9,7 +9,7 @@ module.exports = {
       const usersObj = {
         users,
         friendCount: await (friendCount()),
-      }
+      };
 
       res.status(200).json(usersObj);
     } catch (err) {
@@ -24,7 +24,7 @@ module.exports = {
 
       if (!user) {
         return res.status(404).json({ message: 'No user found with that ID'});
-      }
+      };
 
       userObj = {
         user,
