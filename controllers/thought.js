@@ -1,4 +1,4 @@
-const { Thought, Reaction } = require('../models');
+const { Thought } = require('../models');
 
 module.exports = {
   async getAllThoughts(req, res) {
@@ -29,11 +29,6 @@ module.exports = {
       if (!thought) {
         return res.status(404).json({ message: 'No thought found with that ID'});
       };
-
-      // const thoughtObj = {
-      //   thought,
-      //   reactionCount: reactionCount(),
-      // };
 
       res.status(200).json(thought);
     } catch (err) {
@@ -87,8 +82,10 @@ module.exports = {
       if (!thought) {
         return res.status(404).json({ message: 'No thought found with that ID' });
       };
-      const reaction = thought.reactions.create(req.body);
-      res.status(200).json(reaction);
+
+      thought.reactions.push(req.body);
+      await thought.save();
+      res.status(200).json({ msg: "Reaction added: ", thought });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
@@ -105,8 +102,9 @@ module.exports = {
       if (!thought) {
         return res.status(404).json({ message: 'No thought found with that ID' });
       };
-      const reaction = thought.reactions.pull(req.body);
-      res.status(200).json(reaction);
+      const reaction = thought.reactions.pull(reactionId);
+      await thought.save();
+      res.status(200).json({ msg: "Reaction Deleted", reaction });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);

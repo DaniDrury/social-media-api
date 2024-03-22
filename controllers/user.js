@@ -1,10 +1,14 @@
 // const { ObjectId } = require('mongoose').Types;
-const { User, Friend } = require('../models');
+const { User } = require('../models');
 
 module.exports = {
   async getAllUsers(req, res) {
     try {
       const users = await User.find();
+
+      if (!users) { 
+        res.status(404).json({ msg: "Users not found", users });
+      };
 
       res.status(200).json(users);
     } catch (err) {
@@ -20,11 +24,6 @@ module.exports = {
       if (!user) {
         return res.status(404).json({ message: 'No user found with that ID' });
       };
-
-      // userObj = {
-      //   user,
-      //   friendCount: await (friendCount()),
-      // }
 
       res.status(200).json(user);
     } catch (err) {
@@ -89,7 +88,7 @@ module.exports = {
       };
 
       user.friends.push(friendId);
-      // await user.save();
+      await user.save();
       res.status(200).json(user);
     } catch (err) {
       console.log(err);
@@ -109,7 +108,7 @@ module.exports = {
       };
 
       user.friends.pull(friendId);
-      // await user.save();
+      await user.save();
       res.status(200).json(user);
     } catch (err) {
       console.log(err);

@@ -26,7 +26,6 @@ const thoughtSchema = new Schema(
     virtuals: {
       reactionCount: {
         get() {
-          console.log('here');
           return this.reactions.length;
         },
       },
