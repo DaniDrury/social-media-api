@@ -6,19 +6,14 @@ module.exports = {
     try {
       const users = await User.find();
 
-      const usersObj = {
-        users,
-        friendCount: await (friendCount()),
-      };
-
-      res.status(200).json(usersObj);
+      res.status(200).json(users);
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
     }
   },
   async getUserById(req, res) {
-    const userId = req.params;
+    const userId = req.params.id;
     try {
       const user = await User.findById(userId).select('-__v');
 
@@ -26,12 +21,12 @@ module.exports = {
         return res.status(404).json({ message: 'No user found with that ID' });
       };
 
-      userObj = {
-        user,
-        friendCount: await (friendCount()),
-      }
+      // userObj = {
+      //   user,
+      //   friendCount: await (friendCount()),
+      // }
 
-      res.status(200).json(userObj);
+      res.status(200).json(user);
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
@@ -47,7 +42,7 @@ module.exports = {
     }
   },
   async updateUser(req, res) {
-    const userId = req.params;
+    const userId = req.params.id;
     try {
       const user = await User.findOneAndUpdate(
         { _id: userId },
@@ -66,7 +61,7 @@ module.exports = {
     }
   },
   async deleteUser(req, res) {
-    const userId = req.params;
+    const userId = req.params.id;
 
     try {
       const user = await User.findOneAndDelete(userId);
@@ -75,7 +70,7 @@ module.exports = {
         return res.status(404).json({ message: 'No user found with that ID' });
       };
 
-      res.status(200).json(user);
+      res.status(200).json({ msg: "Success - User Deleted", user });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);

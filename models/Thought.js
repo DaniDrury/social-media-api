@@ -26,6 +26,7 @@ const thoughtSchema = new Schema(
     virtuals: {
       reactionCount: {
         get() {
+          console.log('here');
           return this.reactions.length;
         },
       },
@@ -35,7 +36,7 @@ const thoughtSchema = new Schema(
 );
 
 function formatDate(createdAt) {
-  return createdAt.format("MM, DD, YYYY");
+  return moment(createdAt).format("MM, DD, YYYY");
 };
 
 const Thought = model('Thought', thoughtSchema);
