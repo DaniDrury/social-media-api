@@ -109,7 +109,7 @@ module.exports = {
 
       user.friends.pull(friendId);
       await user.save();
-      res.status(200).json(user);
+      res.status(200).json({ msg: "Friend Removed", user });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
