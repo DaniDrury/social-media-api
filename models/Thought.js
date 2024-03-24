@@ -35,7 +35,7 @@ const thoughtSchema = new Schema(
 );
 
 function formatDate(createdAt) {
-  return moment(createdAt).format("MM, DD, YYYY");
+  return moment(createdAt).format("MMM Qo, YYYY [at] LT");
 };
 
 const Thought = model('Thought', thoughtSchema);

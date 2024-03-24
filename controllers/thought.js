@@ -1,9 +1,10 @@
 const { Thought } = require('../models');
+const { ObjectId } = require('mongoose').Types;
 
 module.exports = {
   async getAllThoughts(req, res) {
     try {
-      const thoughts = await Thought.find();
+      const thoughts = await Thought.find().select('-__v');
 
       res.status(200).json(thoughts);
     } catch (err) {
@@ -72,7 +73,6 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // NEED TO PUSH REACTION TO REACTION ARRAY FOR THOUGHT
   async createReaction(req, res) {
     const thoughtId = req.params.id;
 
@@ -91,10 +91,9 @@ module.exports = {
       res.status(500).json(err);
     };
   },
-  // NEED TO PULL REACTION FROM ARRAY
   async deleteReaction(req, res) {
     const thoughtId = req.params.id;
-    const reactionId = req.params.reactionId;
+    const reactId = req.params.reactionId;
 
     try {
       const thought = await Thought.findById(thoughtId);
@@ -102,7 +101,19 @@ module.exports = {
       if (!thought) {
         return res.status(404).json({ message: 'No thought found with that ID' });
       };
-      const reaction = thought.reactions.pull(reactionId);
+
+      let count = 0;
+      for (let i = 0; i < thought.reactions.length; i++) {
+        if ((thought.reactions[i].reactionId).toString() === reactId) {
+          count++;
+        };
+      };
+
+      if (count === 0) {
+        return res.status(404).json({ msg: "No reaction with that ID found for associated thought"});
+      }
+
+      const reaction = thought.reactions.pull({ reactionId: reactId });
       await thought.save();
       res.status(200).json({ msg: "Reaction Deleted", reaction });
     } catch (err) {

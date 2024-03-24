@@ -3,6 +3,7 @@ const moment = require('moment');
 
 const reactionSchema = new Schema(
   {
+    _id: false,
     reactionId: {
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId,
@@ -19,7 +20,7 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: () => moment(),
-      get: (createdAt) => { return moment(createdAt).format("MM, DD, YYYY") },
+      get: (createdAt) => { return moment(createdAt).format("MMM Qo, YYYY [at] LT") },
     },
   },
   {
