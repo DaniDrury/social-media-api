@@ -1,4 +1,3 @@
-// const { ObjectId } = require('mongoose').Types;
 const { User } = require('../models');
 
 module.exports = {
@@ -75,7 +74,6 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-
   async addFriend(req, res) {
     const userId = req.params.id;
     const friendId = req.params.friendId;
@@ -87,8 +85,8 @@ module.exports = {
         return res.status(404).json({ message: 'No user found with that ID' });
       };
 
+      // confirm the friend ID provided matches an existing user before adding
       const friend = await User.findById(friendId);
-
       if (!friend) {
         return res.status(404).json({ msg: 'No user found with that friend ID'});
       }
@@ -101,7 +99,6 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-
   async deleteFriend(req, res) {
     const userId = req.params.id;
     const friendId = req.params.friendId;
@@ -113,6 +110,7 @@ module.exports = {
         return res.status(404).json({ message: 'No user found with that ID' });
       };
 
+      // confirm friend id to be deleted exists within user.friends array
       if (!user.friends.includes(friendId.toString())) {
         return res.status(404).json({ msg: "No matching friend found for selected user" });
       };

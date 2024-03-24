@@ -1,5 +1,4 @@
 const { Thought } = require('../models');
-const { ObjectId } = require('mongoose').Types;
 
 module.exports = {
   async getAllThoughts(req, res) {
@@ -102,6 +101,7 @@ module.exports = {
         return res.status(404).json({ message: 'No thought found with that ID' });
       };
 
+      // Check that reaction exists on selected thought before trying to delete
       let count = 0;
       for (let i = 0; i < thought.reactions.length; i++) {
         if ((thought.reactions[i].reactionId).toString() === reactId) {
@@ -113,6 +113,7 @@ module.exports = {
         return res.status(404).json({ msg: "No reaction with that ID found for associated thought"});
       }
 
+      // pull reaction from thought.reactions array and save to database
       const reaction = thought.reactions.pull({ reactionId: reactId });
       await thought.save();
       res.status(200).json({ msg: "Reaction Deleted", reaction });

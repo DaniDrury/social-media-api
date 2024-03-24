@@ -3,7 +3,6 @@ const moment = require('moment');
 
 const reactionSchema = new Schema(
   {
-    _id: false,
     reactionId: {
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId,
@@ -25,6 +24,7 @@ const reactionSchema = new Schema(
   },
   {
     toJSON: { getters: true },
+    _id: false,
   }
 );
 
