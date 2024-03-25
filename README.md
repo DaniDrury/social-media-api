@@ -4,6 +4,8 @@
 ## Description
 CRUD API using mongoDB database and mongoose.js for management of users, thoughts, friends list and reactions.
 
+Walkthrough Video: [https://drive.google.com/file/d/1Z-VFOxkBxUK3AWvy83-U7E-AKXJm_kPV/view?usp=sharing](https://drive.google.com/file/d/1Z-VFOxkBxUK3AWvy83-U7E-AKXJm_kPV/view?usp=sharing)
+
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
