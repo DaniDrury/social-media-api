@@ -60,7 +60,7 @@ module.exports = {
     const thoughtId = req.params.id;
 
     try {
-      const thought = await Thought.findOneAndDelete(thoughtId);
+      const thought = await Thought.findByIdAndDelete(thoughtId);
 
       if (!thought) {
         return res.status(404).json({ message: 'No thought found with that ID'});
